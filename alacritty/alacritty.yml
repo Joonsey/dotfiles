@@ -1,0 +1,11 @@
+font:
+  size: 18.0
+  normal:
+    family: 'hurmit nf'
+    style: medium
+  bold:
+    family: 'hurmit nf'
+    style: bold
+  italic:
+    family: 'hurmit nf'
+    style: light
