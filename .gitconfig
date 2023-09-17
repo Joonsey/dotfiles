@@ -1,0 +1,17 @@
+[user]
+	name = Johannes
+	email = johannes.ronning@outlook.com
+[core]
+	editor = nvim
+	pager = delta
+[credential]
+	helper = manager-core
+	useHttpPath = true
+	credentialStore = cache
+[alias]
+	adog = log --all --decorate --oneline --graph
+[init]
+	defaultBranch = master
+[push]
+	autoSetupRemote = true
+

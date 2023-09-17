@@ -3,5 +3,7 @@
     "coc-pyright": ">=1.1.272",
     "coc-tsserver": ">=1.11.11",
     "coc-omnisharp": ">=0.0.28"
+    "coc-ccls": ">=0.0.5",
+    "coc-pyright": ">=1.1.325"
   }
 }

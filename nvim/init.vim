@@ -1,9 +1,13 @@
 call plug#begin()
-Plug 'kyazdani42/nvim-web-devicons'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'mattn/emmet-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
+Plug 'morhetz/gruvbox'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jiangmiao/auto-pairs'
@@ -15,20 +19,23 @@ Plug 'rust-lang/rust.vim'
 Plug 'preservim/tagbar'
 Plug 'universal-ctags/ctags'
 Plug 'luochen1990/rainbow'
-Plug 'vim-syntastic/syntastic'
 Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-surround'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'tommcdo/vim-lion'
 Plug 'Shirk/vim-gas'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'puremourning/vimspector'
+Plug 'jlcrochet/vim-razor'
+Plug 'jlcrochet/vim-cs'
 call plug#end()
 
 " Get syntax files from config folder
 set runtimepath+=~/.config/nvim/syntax
 
 " Theme
-colorscheme palenight
+set background=dark
+colorscheme gruvbox
 
 " Disable C-z from job-controlling neovim
 nnoremap <c-z> <nop>
@@ -52,6 +59,42 @@ set number
 set relativenumber
 set ruler
 
+" vimspector mappings
+let g:vimspector_enable_mappings = 'HUMAN'
+
+" splitting panel
+nnoremap <leader>sh :split <cr>
+nnoremap <leader>ss :vsplit .<cr>
+nnoremap <leader>sv :vsplit <cr>
+
+" quiting
+nnoremap <leader>qq :q <cr>
+
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
+
+" fugitive git bindings
+nnoremap <leader>gg :G<CR><CR>
+nnoremap <leader>ga :Git add %:p<CR><CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit -v -q<CR>
+nnoremap <leader>gt :Gcommit -v -q %:p<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>ge :Gedit<CR>
+nnoremap <leader>gr :Gread<CR>
+nnoremap <leader>gw :Gwrite<CR><CR>
+nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <leader>gp :Ggrep<Space>
+nnoremap <leader>gm :Gmove<Space>
+nnoremap <leader>gb :Git branch<Space>
+nnoremap <leader>go :Git checkout<Space>
+nnoremap <leader>gps :Git push<CR>
+nnoremap <leader>gpl :Git pull<CR>
+
+>>>>>>> 00413d8 (added nvim, tmux, git - configs)
 " Don't make noise
 set visualbell
 
@@ -92,6 +135,7 @@ set incsearch
 set autoindent
 set smartindent
 
+<<<<<<< HEAD
 set t_Co=256
 
 " ASM == JDH8
@@ -127,6 +171,9 @@ augroup END
  " CTags config
  let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
 
+ " Mouse support
+ set mouse=a
+
  " disable backup files
  set nobackup
  set nowritebackup
@@ -139,9 +186,11 @@ augroup END
 
  set signcolumn=yes
 
-" Use tab for trigger completion with characters ahead and navigate.
+ " Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
+" other plugin before putting this into your config
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
@@ -149,7 +198,7 @@ inoremap <silent><expr> <TAB>
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format
-" <C-g>u breaks current undo, please make your own choice.
+" <C-g>u breaks current undo, please make your own choice
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
@@ -158,13 +207,12 @@ function! CheckBackspace() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion.
+" Use <c-space> to trigger completion
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
-
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -177,16 +225,14 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Use K to show documentation in preview window
+nnoremap <silent> K :call ShowDocumentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
   else
-    execute '!' . &keywordprg . " " . expand('<cword>')
+    call feedkeys('K', 'in')
   endif
 endfunction
 
@@ -284,7 +330,7 @@ let g:lightline = {
 	\             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
 	\ },
 	\ 'component_function': {
-	\   'cocstatus': 'coc#status'
+	\   'cocstatus': 'coc#status',
 	\ },
 	\ }
 
