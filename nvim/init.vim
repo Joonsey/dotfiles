@@ -94,7 +94,6 @@ nnoremap <leader>go :Git checkout<Space>
 nnoremap <leader>gps :Git push<CR>
 nnoremap <leader>gpl :Git pull<CR>
 
->>>>>>> 00413d8 (added nvim, tmux, git - configs)
 " Don't make noise
 set visualbell
 
@@ -135,7 +134,6 @@ set incsearch
 set autoindent
 set smartindent
 
-<<<<<<< HEAD
 set t_Co=256
 
 " ASM == JDH8
