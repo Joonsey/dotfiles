@@ -1,6 +1,9 @@
 {
 	"python.linting.enabled":false,
 	"pyright.inlayHints.enable": false,
+	"pyright.inlayHints.functionReturnTypes": false,
+	"pyright.inlayHints.variableTypes": false,
+	"pyright.inlayHints.parameterTypes": false,
 	"languageserver": {
 		"ccls": {
 			"command": "ccls",
